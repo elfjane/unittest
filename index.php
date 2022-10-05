@@ -11,10 +11,14 @@ if (isset($_REQUEST['api_type'])) {
 require_once('test/' . $api_type . '/config.php');
 
 $inputs = make_inputs($api_type);
-$html = make_html($inputs);
-$input_list = json_encode($html);
-$server_ip = $_SERVER['SERVER_ADDR'];
-$remote_ip = get_IP();
+if (isset($_REQUEST['url'])) {
+    $url = $_REQUEST['url'];
+} else {
+    $url = CRON_WEB_URL;
+}
+
+$html = make_html($inputs, $url);
+//$input_list = json_encode($html);
 include 'tpl/unittest_pure.tpl.php';
 //include 'tpl/unittest3.tpl.php';
 ?>

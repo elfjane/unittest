@@ -36,6 +36,12 @@ function get_IP()
     return $user_ip;
 }
 
+// 取得 伺服器 IP
+function get_server_IP()
+{
+    return $_SERVER['SERVER_ADDR'];;
+}
+
 function make_inputs($api_type)
 {
     require_once('test/' . $api_type . '/api.php');
@@ -62,56 +68,59 @@ function make_inputs($api_type)
     return $inputs;
 
 }
-function make_html($inputs)
+
+function make_html($inputs, $url)
 {
-        $input_list = array();
-        foreach ($inputs as $input => $value) {
+    $input_list = array();
+    foreach ($inputs as $input => $value) {
 
-            $input_list[$input] = array(
-                "name" => $input,
-                "src"  => CRON_WEB_URL . $input,
-            );
+        $input_list[$input] = array(
+            "name" => $input,
+            "src"  => $url . $input,
+        );
 
-            foreach ($value['parameter_list'] as $key => $val) {
-                $val_data = $val;
+        foreach ($value['parameter_list'] as $key => $val) {
+            $val_data = $val;
 
-                $parameter_val = '';
-                $parameter_help = '';
-                $parameter_type = '';
-                if (isset($val_data['val'])) {
-                    $parameter_val = $val_data['val'];
-                }
-                if (isset($val_data['help'])) {
-                    $parameter_help = $val_data['help'];
-                }
-                if (isset($val_data['type'])) {
-                    $parameter_type = $val_data['type'];
-                }
-
-                $input_list[$input]["item_title"] = $value['item_title'];
-                $input_list[$input]["item_help"]  = $value['item_help'];
-                $input_list[$input]["key"][$key] = array(
-                    "v"     => $parameter_val,
-                    "title" => $key,
-                    "help"  => $parameter_help,
-                    "type"  => $parameter_type,
-                );
+            $parameter_val = '';
+            $parameter_help = '';
+            $parameter_type = '';
+            if (isset($val_data['val'])) {
+                $parameter_val = $val_data['val'];
             }
+            if (isset($val_data['help'])) {
+                $parameter_help = $val_data['help'];
+            }
+            if (isset($val_data['type'])) {
+                $parameter_type = $val_data['type'];
+            }
+
+            $input_list[$input]["item_title"] = $value['item_title'];
+            $input_list[$input]["item_help"]  = $value['item_help'];
+            $input_list[$input]["key"][$key] = array(
+                "v"     => $parameter_val,
+                "title" => $key,
+                "help"  => $parameter_help,
+                "type"  => $parameter_type,
+            );
         }
-        return $input_list;
+    }
+    return $input_list;
 }
 
 // 發送 json
 function send_json($url, $data)
 {
 
-
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    return $result = curl_exec($ch);
+    $result = curl_exec($ch);
+    if(curl_exec($ch) === false) {
+        return 'request error: ' . curl_error($ch);
+    }
+    return $result;
 }
 /*
 // csv load
