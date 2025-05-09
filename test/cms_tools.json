@@ -1,0 +1,64 @@
+{
+  "config": {
+    "url": [
+      "https://elfjane.elfjane.com/",
+      "https://elfjane2.elfjane.com/"      
+    ]
+  },
+  "api": [
+    {
+      "item_url": "cms/api_html_cover.php",
+      "item_type": "POST",
+      "item_title": "cms cover",
+      "item_help": "cms/api_html_cover.php",
+      "parameter_list": [
+        "value",
+        "label_name",
+        "json_file",
+        "rem",
+        "break_list",
+        "isKeepName",
+        "items"
+      ],
+      "parameter_uri": [
+        "value",
+        "label_name",
+        "json_file",
+        "rem",
+        "break_list",
+        "isKeepName",
+        "items"
+      ],
+      "parameter_header": [
+        "value",
+        "label_name",
+        "json_file",
+        "rem",
+        "break_list",
+        "isKeepName",
+        "items"
+      ]
+    },
+    {
+      "item_url": "cms/get_json_files.php",
+      "item_type": "GET",
+      "item_title": "get css json file",
+      "item_help": "cms/get_json_files.php",
+      "parameter_list": []
+    }
+  ],
+  "value": {
+    "rem": {
+      "name": "remtitle",
+      "val": 1,
+      "type": "bigint",
+      "help": "rem"
+    },
+    "label_name": {
+      "name": "label_name",
+      "val": 1,
+      "type": "file",
+      "help": "label_name"
+    }    
+  }
+}
