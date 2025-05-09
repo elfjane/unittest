@@ -1,4 +1,5 @@
 <?php
+require_once('config.php');
 require_once('function_db.php');
 
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
