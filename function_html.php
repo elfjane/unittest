@@ -34,6 +34,10 @@ function getInputHeader($classKey, $class, $header, $headerName)
             {
                 $html .= '<textarea ' . $c  . ' auto-height" rows="6" cols="">'. $val2['v'] .'</textarea>';                
             } break;
+            case 'json':
+            {
+                $html .= '<textarea ' . $c  . ' auto-height" rows="6" cols="">'. $val2['v'] .'</textarea>';                
+            } break;            
             default:
             {
                 $html .= '<input type="text" ' . $c .' placeholder="' . $val2['help'] . '" value="' . $val2['v'] .  '">';                
@@ -79,6 +83,10 @@ function getInputList($classKey, $class, $header, $headerName)
             {
                 $html .= '<textarea name="' . $key2 . '"' . $c  . ' auto-height" rows="6" cols="">'. $val2['v'] .'</textarea>';                
             } break;
+            case 'json':
+            {
+                $html .= '<textarea name="' . $key2 . '"' . $c  . ' auto-height" rows="6" cols="">'. $val2['v'] .'</textarea>';                
+            } break;            
             default:
             {
                 $html .= '<input type="text" name="' . $key2 . '" ' . $c .' placeholder="' . $val2['help'] . '" value="' . $val2['v'] .  '">';                

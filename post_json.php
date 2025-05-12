@@ -18,11 +18,34 @@ $i_input_uri = $_POST['i_input_uri'] ?? '';
 $i_send_header = $_POST['i_send_header'] ?? '';
 $i_color = isset($_POST['i_color']);
 
+$api_file_json = 'test/' . $api_type . '.json';
+if (file_exists($api_file_json)) {
+    $api_json = file_get_contents($api_file_json);
+    $apiDecode = json_decode($api_json, JSON_OBJECT_AS_ARRAY);
+    $api = $apiDecode['api'];
+    $value = $apiDecode['value'];
+    $config = $apiDecode['config'];
+}
 // 將 POST 資料過濾進來（排除特殊欄位）
 $skip_keys = ['i_send_type', 'i_send_url', 'i_api_type', 'i_send_header', 'i_input_uri', 'i_color'];
 foreach ($_POST as $key => $val) {
     if (!in_array($key, $skip_keys) && $val !== '') {
-        $data[$key] = $val;
+        $dataType='';
+        if (isset($value[$key]) ) {
+            $dataType = $value[$key]['type'];
+        }
+        switch($dataType)
+        {
+            case 'json':
+            {
+                $data[$key] = json_decode($val);
+            } break;
+            default:
+            {
+                $data[$key] = $val;
+            } break;
+        }
+
     }
 }
 

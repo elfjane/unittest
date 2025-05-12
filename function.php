@@ -254,6 +254,8 @@ function send_json($url, $data, $type, $header = array())
     //var_dump($headers);
     
     $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);    
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -298,12 +300,28 @@ function send_file_json($url, $data, $type = 'POST', $headers = [])
         $send_body = $post_data; // multipart 表單是 array
     } else {
         $content_type = 'application/x-www-form-urlencoded';
+        
+        if (defined('CRON_SEND_TYPE')) {
+            $send_type = CRON_SEND_TYPE;
+        }
+
+        switch ($send_type)
+        {
+            case 'json':
+            {
+                $content_type = 'application/json';
+            } break;
+            default:
+            {
+            } break;
+        }        
         foreach ($headers as $h) {
             if (stripos($h, 'Content-Type: application/json') !== false) {
                 $content_type = 'application/json';
                 break;
             }
         }
+        //var_dump($content_type);
         if ($content_type === 'application/json') {
             $send_body = json_encode($data, JSON_UNESCAPED_UNICODE);
             $post_data = $send_body;
@@ -328,6 +346,8 @@ function send_file_json($url, $data, $type = 'POST', $headers = [])
     }
 
     // cURL 設定
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);    
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($type));
     if (strtoupper($type) !== 'GET') {
