@@ -40,6 +40,18 @@ foreach ($_POST as $key => $val) {
             {
                 $data[$key] = json_decode($val);
             } break;
+            case 'int':
+            {
+                $data[$key] = intval($val);
+            } break;         
+            case 'bool':
+            {
+                if ($val == "true" || $val == 1) {
+                    $data[$key] = true;                    
+                } else {
+                    $data[$key] = false ;                     
+                }
+            } break;               
             default:
             {
                 $data[$key] = $val;
