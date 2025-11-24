@@ -7,7 +7,8 @@
  */
 
 define('CRON_DEBUG_MODE', 1);
-define('CRON_SEND_TYPE', 'json');
+//define('CRON_SEND_TYPE', 'json');
+define('CRON_SEND_TYPE', 'urlencoded');
 
 define('CRON_DEBUG_MODE_TIME', 1);
 

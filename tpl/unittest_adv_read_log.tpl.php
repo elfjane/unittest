@@ -64,6 +64,7 @@ if (isset($val['key'])) {
             <td colspan="3"><?=$val['item_url']?><?= $val['item_uri_help']?></td>
             <td>
                 <button type="submit" class="btn" onclick="return load_iframe(this.form)"><?= $val['item_type'] ?></button>
+                <span id="loading-indicator" style="display:none; margin-left: 10px;">⏳ 執行中...</span>
             </td>
         </tr>
     </table>

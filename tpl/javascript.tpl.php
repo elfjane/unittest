@@ -17,14 +17,25 @@ function load_iframe(form) {
 
     is_loading = true;
 
+    const btn = form.querySelector('button[type="submit"]');
+
+    // 檢查是否已經加過 loading span（避免重複）
+    if (!btn.querySelector('.loading-text')) {
+        const span = document.createElement('span');
+        span.className = 'loading-text';
+        span.style.marginLeft = '8px';
+        span.innerText = '⏳ 執行中...';
+        btn.appendChild(span);
+    }
+
+    btn.disabled = true;
+
     const url = form.getAttribute('action');
     const formData = new FormData(form);
     const sendTime = getLocalDateTimeString();
     const i_send_url = form.querySelector('input[name="i_send_url"]')?.value || url;
 
-    // === 新增：從 class 為 i_input_header 的 input 抓 header ===
     const headerInputs = form.querySelectorAll('.i_input_header');
-    console.log(headerInputs);
     const headers = {};
     headerInputs.forEach(input => {
         const key = input.getAttribute('data-key')?.trim();
@@ -41,9 +52,12 @@ function load_iframe(form) {
     })
     .then(response => response.text())
     .then(data => {
-        const receiveTime = getLocalDateTimeString();
         is_loading = false;
+        btn.disabled = false;
+        const loadingSpan = btn.querySelector('.loading-text');
+        if (loadingSpan) loadingSpan.remove();
 
+        const receiveTime = getLocalDateTimeString();
         const newPost = {
             sendTime: sendTime,
             receiveTime: receiveTime,
@@ -65,8 +79,10 @@ function load_iframe(form) {
         showPost(postList.length - 1);
     })
     .catch(error => {
-        console.error('Error:', error);
         is_loading = false;
+        btn.disabled = false;
+        const loadingSpan = btn.querySelector('.loading-text');
+        if (loadingSpan) loadingSpan.remove();
 
         const receiveTime = getLocalDateTimeString();
         const newPost = {
@@ -92,6 +108,7 @@ function load_iframe(form) {
 
     return false;
 }
+
 
 
 function showPost(index) {
